@@ -51,6 +51,16 @@ class Basins_med_analysis():
             elif RECTANGLE.cross(basV2.ion3):
                return(basV2.ion3.name, basV2.ion3.borders)
         
+    def col_to_basin(df,lon_col_name='lon', lat_col_name='lat'):
+        df['Basin'] = np.nan
+        for III in range(0,len(df)):
+           tmp_lat = df.iloc[III,:][lat_col_name]
+           tmp_lon = df.iloc[III,:][lon_col_name]
+           ARGO       = Rectangle(np.float(tmp_lon ) , np.float( tmp_lon) , np.float(tmp_lat) , np.float(tmp_lat))
+           NAME_BASIN , BORDER_BASIN = cross_Med_basins(ARGO)
+           df['Basin'].iloc[III] = NAME_BASIN
+        return (df)
+ 
     def West_or_East(namebasin):
         """ dipende da funzione sopra which_Med_basins """
         if namebasin in ['adr1','adr2','ion2','ion3', 'lev1','lev2','lev3','lev4','aeg']:
@@ -65,3 +75,4 @@ class Basins_med_analysis():
       LN_MAX=30
       LT_MAX=46
       return LT_MIN < lat < LT_MAX and LN_MIN < lon < LN_MAX
+    
