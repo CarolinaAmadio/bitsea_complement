@@ -66,12 +66,3 @@ if SAVE_CSV:
    df.to_csv(OUTDIR+TSS+'_'+VARNAME+'.csv' )
 else:
    print('file data not saved')
-
-import matplotlib.pyplot as plt
-from matplotlib.colors import BoundaryNorm
-from matplotlib.ticker import MaxNLocator
-import matplotlib as mpl
-from matplotlib import cm as color_map
-import matplotlib as mpl
-from mpl_toolkits.basemap import Basemap
-
