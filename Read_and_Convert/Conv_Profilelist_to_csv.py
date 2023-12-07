@@ -1,4 +1,4 @@
-#export ONLINE_REPO=/g100_scratch/userexternal/camadio0/Multivariate_Assimilation_2017_2018/ONLINE/
+#export ONLINE_REPO=/g100_work/OGS_devC/V9C/RUNS_SETUP/PREPROC/DA/
 # EX NAME: Time_Series_1plot.py
 import numpy as np
 import pandas as pd
@@ -66,3 +66,98 @@ if SAVE_CSV:
    df.to_csv(OUTDIR+TSS+'_'+VARNAME+'.csv' )
 else:
    print('file data not saved')
+
+import matplotlib.pyplot as plt
+from matplotlib.colors import BoundaryNorm
+from matplotlib.ticker import MaxNLocator
+import matplotlib as mpl
+from matplotlib import cm as color_map
+import matplotlib as mpl
+from mpl_toolkits.basemap import Basemap
+
+df['time'] =  pd.to_datetime(df['time'], infer_datetime_format=True)
+df['date']=df.time.dt.date
+df['n_profiles_per_day']=1
+df.date =pd.to_datetime(df.date)
+df['month'] = df.date.dt.month
+df['year'] = df.date.dt.year
+df = df.sort_values(by='date',ascending=True)
+df.index=np.arange(0,len(df))
+
+#
+df[df=='D'].count()
+df[df=='A'].count()
+
+# PLOTLINE
+import matplotlib.dates as mdates
+
+# BARPOLT staked
+df4 =df.groupby(by=['year','month']).sum()
+df4.reset_index(inplace=True)
+df4['DATE_'] = pd.to_datetime(df4[['year', 'month']].assign(DAY=1))
+list_VM = df.groupby(by=['year','month'], as_index=False).agg({'Type':list})
+if np.array_equal(list_VM.index.values, df4.index.values):
+   df4['type'] = list_VM['Type']
+ad =pd.DataFrame(index=np.arange(0,len(df4)), columns=(['A','D']))
+from collections import Counter
+for iii in range(0,len(df4)):
+    tmp = df4.iloc[iii,:]
+    ll = dict(Counter(tmp.type))
+    if 'A' in ll:
+        ad.A[iii] = ll["A"]
+    if 'D'in ll:
+        ad.D[iii] = ll['D']
+
+if PLT_STACKED:
+   fig,ax = plt.subplots(figsize=(14,5))
+   ad.index = df4['DATE_'].dt.strftime('%Y-%m')
+   ad.plot(kind='bar', ax=ax,stacked=True, color=['dodgerblue','r'],  title='total of assimilation per day')
+   x = np.arange(0, len(ad) , 3)
+   labels = ad.index[::3]
+   plt.xticks(x, labels, rotation='vertical')
+   ax.grid((True), linestyle=':', linewidth=0.5, color='k')
+   ax.set_title('Monthly-Time serie ARGO '+varmod+'_MODE ( start date: '+DATE_start+' end date: '+ DATE_end +')', fontsize=16,fontweight="bold")
+# center text
+   ax.set_ylabel('N. Profiles')
+   txt= 'Tot n. of profiles: '+np.str(len(Profilelist))
+   plt.figtext(0.5, 0.01, txt, wrap=True, horizontalalignment='center', fontsize=12)
+   plt.subplots_adjust(left=0.1,top=0.93,bottom=0.23 )
+   plt.savefig(OUTDIR+TSS+'float_stackedbarplot.png')
+   plt.close()
+
+if PLT_BAR:
+   fig,ax = plt.subplots(figsize=(14,5))
+   tot = ad.sum(axis=1)
+   tot.plot(kind='bar', color='dodgerblue')
+   x = np.arange(0, len(tot) , 3)
+   labels = tot.index[::3]
+   plt.xticks(x, labels, rotation='vertical')
+   ax.grid((True), linestyle=':', linewidth=0.5, color='k')
+   #ax.set_title('Monthly-Time serie ARGO '+varmod+' ( start date: '+DATE_start+' end date: '+ DATE_end +')', fontsize=16,fontweight="bold")
+   txt= 'Tot n. of profiles: '+np.str(len(Profilelist))
+   plt.figtext(0.5, 0.01, txt, wrap=True, horizontalalignment='center', fontsize=12)
+   plt.subplots_adjust(left=0.1,top=0.93,bottom=0.23 )
+   plt.savefig(OUTDIR+TSS+'float_barplot.png' )
+   plt.close()
+
+if PLT_BAR:
+   fig,ax = plt.subplots(figsize=(14,5))
+   tot = ad.sum(axis=1)
+   tot.plot(kind='area', color='silver', alpha=0.8)
+   tot.index.name =''
+   x = np.arange(0, len(tot) , 3)
+   labels = tot.index[::3]
+   plt.xticks(x, labels, rotation='vertical')
+   ax.grid((True), linestyle=':', linewidth=0.5, color='k')
+   ax.tick_params(axis='both', which='major', labelsize=16)
+   plt.subplots_adjust(left=0.1,top=0.95,bottom=0.25, right=0.98 )
+   plt.savefig(OUTDIR+TSS+'float_areaplot.png')
+   plt.close()
+
+import shutil
+#shutil.copy('Time_Series_1plot.py', OUTDIR)
+
+
+
+
+
