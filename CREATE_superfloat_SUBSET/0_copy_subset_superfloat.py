@@ -42,7 +42,7 @@ args = argument()
 from commons.utils import addsep
 
 print ('__________________________________________________________')
-print('programma per copiare un dataset in scratch per un intervallo \n di tempo specifico fare export del dataset desiderato')
+print('Program to copy a subset of a dataset for a specific time interval')
 print ('__________________________________________________________\n')
 
 if "ONLINE_REPO" in environ:
