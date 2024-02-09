@@ -104,7 +104,7 @@ for p in Profilelist:
     shutil.copy(FILE[0], OUTDIR + WMO + endstr )
 
 print(OUTDIR + WMO + endstr)
-shutil.copy('0_Subset_superfloat.py', OUTDIR)
+shutil.copy('0_copy_subset_superfloat.py', OUTDIR)
 
 #Float_Index = glob.glob(INDIR  + '*.txt' )
 #for III in Float_Index: shutil.copy(III,  OUTDIR )
