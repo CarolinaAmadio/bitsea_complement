@@ -12,11 +12,13 @@ INDIR='/g100_scratch/userexternal/camadio0/PPCON/SUPERFLOAT_PPCon_202312/'
 OUTDIR='/g100_scratch/userexternal/camadio0/PPCON/SUPERFLOAT_PPCon_202312_yr2019/'
 
 #  make a copy of the dataset es V9C_GB into my scratch for the date range datastart to dataend
-python 0_copy_subset_superfloat.py -i $INDIR -o $OUTDIR -s $DATE_start -e $DATE_end
+#python 0_copy_subset_superfloat.py -i $INDIR -o $OUTDIR -s $DATE_start -e $DATE_end
 
 # create float index
 cp 1_dump_index.py $OUTDIR
-python ${OUTDIR}/1_dump_index.py -i $OUTDIR -o ${OUTDIR}/Float_Index.txt -t superfloat
+#python ${OUTDIR}/1_dump_index.py -i $OUTDIR -o ${OUTDIR}/Float_Index.txt -t superfloat
+
+python 2_Table_of_avail_floats.py -i $INDIR -o $OUTDIR -s $DATE_start -e $DATE_end
 
 exit 0
 
