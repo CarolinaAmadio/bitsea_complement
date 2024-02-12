@@ -11,7 +11,7 @@ def argument():
     and not NITRATE_QC (incorrect).
     ==> This implies that if I launch the same script twice, the second time
     I will print 2 empty dataframes because I have already acted and modified the dataset.
-
+    ==> if i llaunch the script once the end repost must be empty
     """, formatter_class=argparse.RawTextHelpFormatter)
     parser.add_argument(   '--inputdir','-i',
                                 type = str,
@@ -50,7 +50,7 @@ for FILE in LIST_NC:
     nr_iteration+=1
     if  nr_iteration in LIST_PRINT_ITERATIONS: print('iteration nr: ' + str( nr_iteration  ))
 df=pd.DataFrame(LISTA_PPCON)
-print( LISTA_PPCON) 
+#print( LISTA_PPCON) 
 if df.empty:
     sys.exit('no QC_VARIABLE to correct')
 else:
@@ -75,7 +75,7 @@ for FILE in LIST_NC:
 import pandas as pd
 df1=pd.DataFrame(LISTA_PPCON)
 if df1.empty:
-    print('DataFrame is empty for: \n')
+    print('DataFrame at the end is empty for: \n')
     print( VAR_NAME)
 else:
     df1.columns=['QC_'+VAR_NAME]

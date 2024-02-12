@@ -1,17 +1,19 @@
 #!/bin/bash
 
-INDIR='/g100_scratch/userexternal/camadio0/PPCON/SUPERFLOAT_PPCon_202312/'
-ln -s $INDIR ${INDIR}/SUPERFLOAT
+INDIR='/g100_work/OGS_devC/camadio/PPCON/SUPERFLOAT_PPCon_202312/'
+#'/g100_scratch/userexternal/camadio0/PPCON/SUPERFLOAT_PPCon_202312/'
+#ln -s $INDIR ${INDIR}/SUPERFLOAT
 
-export ONLINE_REPO='/g100_scratch/userexternal/camadio0/PPCON/SUPERFLOAT_PPCon_202312/'
+export ONLINE_REPO=$INDIR
+#'/g100_scratch/userexternal/camadio0/PPCON/SUPERFLOAT_PPCon_202312/'
 export PYTHONPATH='/g100/home/userexternal/camadio0/bit.sea_py3/'
 
 ##    1. Check if chlorophyll-a profiles have negative concentrations.
 # The program stops when the first negative value is found.
 # (glob based not bit.sea)
 
-#python 0_Check_negative_chla.py -i $INDIR -vv CHLA
-#python 0_Check_negative_chla.py -i $INDIR -vv CHLA_PPCON
+#python 0_Check_negative_chla.py -i $INDIR -vv CHLA -wi True
+#python 0_Check_negative_chla.py -i $INDIR -vv CHLA_PPCON -wi True
 
 
 ##    2. replacing negative values of chla
@@ -20,8 +22,8 @@ export PYTHONPATH='/g100/home/userexternal/camadio0/bit.sea_py3/'
 #python 1_Correct_negative_chla.py -i $INDIR -vv CHLA_PPCON # --> in this case we dedided to overwrite the input dataset
 
 ## 3. run again the check of neg values
-#python 0_Check_negative_chla.py -i $INDIR -vv CHLA
-#python 0_Check_negative_chla.py -i $INDIR -vv CHLA_PPCON
+#python 0_Check_negative_chla.py -i $INDIR -vv CHLA -wi False
+#python 0_Check_negative_chla.py -i $INDIR -vv CHLA_PPCON -wi False
 
 # copiato un po da /g100/home/userexternal/camadio0/PSEUDORUN_SCRIPTS/SCRIPT_Float_Index
 ## 4. renaming varname from QC_NITRATE to NITRATE_QC
@@ -40,7 +42,7 @@ export PYTHONPATH='/g100/home/userexternal/camadio0/bit.sea_py3/'
 
 
 # Update Float_index.txt
-cp 1_dump_index.py $INDIR
+cp 3_dump_index.py $INDIR
 python ${INDIR}/3_dump_index.py -i $INDIR -o ${INDIR}/Float_Index.txt -t superfloat
 
 echo "Dataset modified"
