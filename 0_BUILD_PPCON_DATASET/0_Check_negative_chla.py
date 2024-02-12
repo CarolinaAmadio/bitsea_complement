@@ -36,7 +36,7 @@ nr_iteration=0
 for FILE in FLE_LIST:
    nc = Dataset(FILE)
    VARLIST = nc.variables.keys()
-   if  nr_iteration in LIST_PRINT_ITERATIONS: print('iteration nr: ' + str( nr_iteration  ))
+   #if  nr_iteration in LIST_PRINT_ITERATIONS: print('iteration nr: ' + str( nr_iteration  ))
    nr_iteration+=1
    if VARNAME in VARLIST:
       CHL= nc.variables[VARNAME][:]
