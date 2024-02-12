@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export ONLINE_REPO='/g100_scratch/userexternal/camadio0/PPCON/SUPERFLOAT_PPCon_202312/'
+#export ONLINE_REPO='/g100_scratch/userexternal/camadio0/PPCON/SUPERFLOAT_PPCon_202312/'
 export PYTHONPATH='/g100/home/userexternal/camadio0/bit.sea_py3/'
 
 # Copy dataset vXc into my scratch
@@ -15,9 +15,13 @@ OUTDIR='/g100_scratch/userexternal/camadio0/PPCON/SUPERFLOAT_PPCon_202312_yr2019
 #python 0_copy_subset_superfloat.py -i $INDIR -o $OUTDIR -s $DATE_start -e $DATE_end
 
 # create float index
-cp 1_dump_index.py $OUTDIR
+#cp 1_dump_index.py $OUTDIR
 #python ${OUTDIR}/1_dump_index.py -i $OUTDIR -o ${OUTDIR}/Float_Index.txt -t superfloat
 
+ln -s $OUTDIR ${OUTDIR}/SUPERFLOAT
+export ONLINE_REPO=$OUTDIR
+echo "exported dataset:"
+echo $OUTDIR
 python 2_Table_of_avail_floats.py -i $INDIR -o $OUTDIR -s $DATE_start -e $DATE_end
 
 exit 0
