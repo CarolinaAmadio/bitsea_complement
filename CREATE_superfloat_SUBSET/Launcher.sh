@@ -26,6 +26,8 @@ python 2_Table_of_avail_floats.py -i $INDIR -o $OUTDIR -s $DATE_start -e $DATE_e
 
 exit 0
 
+# veccio scriot t cancel
+
 # gurado quanti float ci sono per vars e creo una tabella 
 # as in https://docs.google.com/presentation/d/1BAUIWEUpthU3b0uCtYCbQ3qSrr2ZHpPxVWET94d8cpY/edit#slide=id.gffe6e32a58_0_0
 python 2_Table_of_avail_floats.py
