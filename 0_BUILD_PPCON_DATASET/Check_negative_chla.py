@@ -47,5 +47,7 @@ for FILE in FLE_LIST:
          sys.exit("Negative value of "+ VARNAME +" was found")
          ICOUNT+=1
          nc.close()
+print('oooooooooooooooooooooooooooooo')
 print('List of the modified files: ')
 print(LIST_FILE)
+print('oooooooooooooooooooooooooooooo')
