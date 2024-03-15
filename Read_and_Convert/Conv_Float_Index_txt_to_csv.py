@@ -14,7 +14,7 @@ class Float_index_management():
         return li
 
     def read_txt(self, namefile, columns, OUTDIR):
-        """  read files.txt and convert it in file.csv
+        """  read files.txt and convert it in file.csv """ 
         df = pd.read_csv(OUTDIR + namefile)
         df.columns= ['WMO','Lat','Lon','Date','VARS']
         df_to_fill = pd.DataFrame(index=df.index, columns = self.columns)
@@ -30,7 +30,7 @@ class Float_index_management():
         df_to_fill.columns
         return df_to_fill
 
-"""
+
 #sys.path.append("/g100/home/userexternal/camadio0/CA_functions/")
 #import funzioni_CA
 
