@@ -15,7 +15,7 @@ class Float_index_management():
 
     def read_txt(self, namefile, columns, OUTDIR):
         """  read files.txt and convert it in file.csv """ 
-        df = pd.read_csv(OUTDIR + namefile)
+        df = pd.read_csv(OUTDIR + namefile, header=None)
         df.columns= ['WMO','Lat','Lon','Date','VARS']
         df_to_fill = pd.DataFrame(index=df.index, columns = self.columns)
         for ROW in range(0,len(df)):
