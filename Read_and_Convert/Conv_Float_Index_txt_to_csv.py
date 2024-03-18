@@ -37,7 +37,7 @@ class Float_index_management():
 import pandas as pd
 import numpy as np
 import sys
-from Float_Index_to_functions import Float_index_management
+#from Float_Index_to_functions import Float_index_management
 OUTDIR='/g100_scratch/userexternal/camadio0/SUPERFLOAT_2017_2019_V9C_SMOOTH_CALIBR/'
 ff = Float_index_management()
 ff.read_txt(ff.namefile,ff.columns, OUTDIR )
