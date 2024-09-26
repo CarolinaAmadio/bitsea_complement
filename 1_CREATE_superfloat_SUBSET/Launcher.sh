@@ -1,22 +1,21 @@
 #!/bin/bash
 
-#export ONLINE_REPO='/g100_scratch/userexternal/camadio0/PPCON/SUPERFLOAT_PPCon_202312/'
-export PYTHONPATH='/g100/home/userexternal/camadio0/bit.sea_py3/'
-
 # Copy dataset vXc into my scratch
 # Input arguments to be inserted within the script
-
+INDIR='/g100_scratch/userexternal/camadio0/PPCON/SUPERFLOAT_PPCon_202312/'
 DATE_start='20190101'
 DATE_end='20200101'
-INDIR='/g100_scratch/userexternal/camadio0/PPCON/SUPERFLOAT_PPCon_202312/'
 OUTDIR='/g100_scratch/userexternal/camadio0/PPCON/SUPERFLOAT_PPCon_202312_yr2019/'
 
+export ONLINE_REPO=$INDIR
+export PYTHONPATH='/g100/home/userexternal/camadio0/bit.sea_py3/'
+
 #  make a copy of the dataset es V9C_GB into my scratch for the date range datastart to dataend
-#python 0_copy_subset_superfloat.py -i $INDIR -o $OUTDIR -s $DATE_start -e $DATE_end
+python 0_copy_subset_superfloat.py -i $INDIR -o $OUTDIR -s $DATE_start -e $DATE_end
 
 # create float index
-#cp 1_dump_index.py $OUTDIR
-#python ${OUTDIR}/1_dump_index.py -i $OUTDIR -o ${OUTDIR}/Float_Index.txt -t superfloat
+cp 1_dump_index.py $OUTDIR
+python ${OUTDIR}/1_dump_index.py -i $OUTDIR -o ${OUTDIR}/Float_Index.txt -t superfloat
 
 ln -s $OUTDIR ${OUTDIR}/SUPERFLOAT
 export ONLINE_REPO=$OUTDIR
