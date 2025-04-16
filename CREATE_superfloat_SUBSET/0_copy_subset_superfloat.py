@@ -1,14 +1,14 @@
 from netCDF4 import Dataset
 import numpy as np
 import sys
-sys.path.append("/g100/home/userexternal/camadio0/CA_functions/")
+#sys.path.append("/g100/home/userexternal/camadio0/CA_functions/")
 import glob
-from commons.time_interval import TimeInterval
-from commons.Timelist import TimeList
-from commons import timerequestors
-import basins.OGS as OGS
-from instruments import superfloat as bio_float
-from instruments import superfloat
+from bitsea.commons.time_interval import TimeInterval
+from bitsea.commons.Timelist import TimeList
+from bitsea.commons import timerequestors
+import bitsea.basins.OGS as OGS
+from bitsea.instruments import superfloat as bio_float
+from bitsea.instruments import superfloat
 from os import environ
 
 import argparse
@@ -39,7 +39,7 @@ def argument():
     return parser.parse_args()
 
 args = argument()
-from commons.utils import addsep
+from bitsea.commons.utils import addsep
 
 print ('__________________________________________________________')
 print('Program to copy a subset of a dataset for a specific time interval')
@@ -61,9 +61,6 @@ OUTDIR       = addsep(args.outdir)
 DATE_start   = args.datestart
 DATE_end     = args.dateend
 
-#DATE_start   =  '20170101'
-#DATE_end     =  '20190101'
-
 endstr       =  '/'
 TI_3         =  timerequestors.TimeInterval(starttime=DATE_start, endtime=DATE_end, dateformat='%Y%m%d')
 Profilelist  =  bio_float.FloatSelector(None  ,TI_3, OGS.med)
@@ -74,8 +71,6 @@ isExist = os.path.exists(OUTDIR)
 if not isExist:
    os.makedirs(OUTDIR)
    print("The new directory is created!" + OUTDIR)
-#else:
-#   sys.exit('oUTPUT DIR Already exitsts') 
 print ('__________________________________________________________\n')
 
 #
@@ -87,16 +82,27 @@ print ('Program create a dataset with\n' +
         ' SAVED IN :' +  OUTDIR)
 print ('__________________________________________________________')
 
+
 import shutil
-from utils import rewriteCYCLE
+def rewriteCYCLE(NR_PROFILE__):
+      # se non funziona controlla import
+      if NR_PROFILE__ >= 100:
+         NR_PROFILE = str(NR_PROFILE__)
+      elif 10 <=  NR_PROFILE__  <= 99:
+         NR_PROFILE = str(0) + str(NR_PROFILE__)
+      else:
+         NR_PROFILE = '00' + str(NR_PROFILE__)
+      return(NR_PROFILE)
 
 for p in Profilelist:
     WMO           = p.name()
-    NR_PROFILE__  = p.profile_nr()
+    NR_PROFILE__  = p._my_float.cycle 
     NR_PROFILE    = rewriteCYCLE(NR_PROFILE__)
     FILE          = glob.glob(INDIR + WMO + endstr + '*'+ WMO+ '_'+NR_PROFILE+'.nc')
     if len(FILE) !=1 :
-        sys.exit('check parsing of netcdf filename')
+        FILE = [next(f for f in FILE if f.split('/')[-1].startswith('SD'))]
+        if len(FILE) !=1 :
+            sys.exit('check parsing of netcdf filename')
     print(OUTDIR + WMO + endstr)     
     isExist = os.path.exists(OUTDIR + WMO + endstr)
     if not isExist:

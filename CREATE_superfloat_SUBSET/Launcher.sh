@@ -1,18 +1,42 @@
 #!/bin/bash
+#SBATCH --job-name=copy_ppcon
+#SBATCH -N1
+#SBATCH --ntasks-per-node=16
+#SBATCH --time=00:20:00
+#SBATCH --mem=300gb
+#SBATCH --account=OGS23_PRACE_IT
+#SBATCH --partition=g100_usr_prod
 
-export ONLINE_REPO='/g100_scratch/userexternal/camadio0/PPCON/SUPERFLOAT_PPCon_202312/'
-export PYTHONPATH='/g100/home/userexternal/camadio0/bit.sea_py3/'
 
-# Copy dataset vXc into my scratch
-# Input arguments to be inserted within the script
+module load autoload
+module load intelmpi/oneapi-2021--binary
+module load intelmpi/oneapi-2021--binary netcdf/4.7.4--oneapi--2021.2.0-ifort ncview
+LIBDIR=/g100_work/OGS23_PRACE_IT/COPERNICUS/V10C/HOST/g100
+export    HDF5_DIR=$LIBDIR
+export NETCDF4_DIR=$LIBDIR
+export    GEOS_DIR=$LIBDIR
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LIBDIR
 
-DATE_start='20190101'
-DATE_end='20200101'
-INDIR='/g100_scratch/userexternal/camadio0/PPCON/SUPERFLOAT_PPCon_202312/'
-OUTDIR='/g100_scratch/userexternal/camadio0/PPCON/SUPERFLOAT_PPCon_202312_yr2019/'
+cd $SLURM_SUBMIT_DIR
+
+. ../profile.inc
+
+source /g100_work/OGS23_PRACE_IT/COPERNICUS/py_env_3.9.18_new/bin/activate
+export ONLINE_REPO=/g100/home/userexternal/camadio0/CLIMATOLOGIE/FLOAT_CLIMATOLOGIES/new_clim_FLOAT_V12C_2012_2025/
+export PYTHONPATH=$PYTHONPATH:/g100/home/userexternal/camadio0/CLIMATOLOGIE/FLOAT_CLIMATOLOGIES/new_clim_FLOAT_V12C_2012_2025/bit.sea/src/
+
+# Input arguments to be passed n the script
+DATE_start='20120101'
+DATE_end='20240101'
+INDIR='/g100/home/userexternal/camadio0/CLIMATOLOGIE/FLOAT_CLIMATOLOGIES/new_clim_FLOAT_V12C_2012_2025/SUPERFLOAT'
+
+OUTDIR=SUPERFLOAT_2012_2024
+mkdir -p OUTDIR
 
 #  make a copy of the dataset es V9C_GB into my scratch for the date range datastart to dataend
-#python 0_copy_subset_superfloat.py -i $INDIR -o $OUTDIR -s $DATE_start -e $DATE_end
+my_prex "python 0_copy_subset_superfloat.py -i $INDIR -o $OUTDIR -s $DATE_start -e $DATE_end"
+
+exit 0
 
 # create float index
 cp 1_dump_index.py $OUTDIR
