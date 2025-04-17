@@ -32,13 +32,11 @@ def argument():
 args = argument()
 
 
-#import scipy.io.netcdf as NC
-from scipy.io import netcdf_file 
-
+from netCDF4 import Dataset
 import datetime
 import os,glob
 import numpy as np
-from commons.utils import addsep
+from bitsea.commons.utils import addsep
 
 try:
     from StringIO import StringIO ## for Python 2
@@ -88,26 +86,26 @@ def file_header_content(filename,VARLIST, avail_params=None):
     - None in case of error
     '''
     try:
-        ncIN = netcdf_file(filename,'r')
+        ncIN =Dataset(filename)
     except:
         print ("Not valid NetDCF file: " + filename)
         return
 
-    lon=ncIN.variables['LONGITUDE'].data[0]
-    lat=ncIN.variables['LATITUDE'].data[0]
+    lon=ncIN.variables['LONGITUDE'][:]
+    lat=ncIN.variables['LATITUDE'][:]
     BadPosition = (lon > 90.) or (lon < -90.) or (lat > 90.) or (lat < -90.) 
     if BadPosition:
         print ("Bad position in file : " + filename)
         ncIN.close()
         return
 
-    #try:
-    #   ref  = ncIN.variables['REFERENCE_DATE_TIME'].data.tostring()
-    #except:
-    ref  = ncIN.variables['REFERENCE_DATE_TIME'].data.tobytes().decode()
-    juld = ncIN.variables['JULD'].data[0]
+    ref_bytes = ncIN.variables['REFERENCE_DATE_TIME'][:]
+    ref = b''.join(ref_bytes).decode()
     d=datetime.datetime.strptime(ref,'%Y%m%d%H%M%S')
-    Time =  d+datetime.timedelta(days=juld)
+    juld = ncIN.variables['JULD'][0]
+    juld_value = juld.item()
+    Time = d + datetime.timedelta(days=juld_value)
+    
     split_path=filename.rsplit(os.sep)
     wmo = split_path[-2]
     basename=split_path[-1]
@@ -140,6 +138,7 @@ os.chdir(LOC)
 
 LINES=[]
 for DIR in DIRLIST:
+    print(DIR)
     dirpath=DIR
     filenames = glob.glob(dirpath + "/*nc")
     filenames.sort()
