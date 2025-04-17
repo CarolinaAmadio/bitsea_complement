@@ -30,18 +30,19 @@ DATE_start='20120101'
 DATE_end='20240101'
 INDIR='/g100/home/userexternal/camadio0/CLIMATOLOGIE/FLOAT_CLIMATOLOGIES/new_clim_FLOAT_V12C_2012_2025/SUPERFLOAT'
 
-OUTDIR=SUPERFLOAT_2012_2024
-mkdir -p OUTDIR
+OUTDIR=/g100/home/userexternal/camadio0/CLIMATOLOGIE/FLOAT_CLIMATOLOGIES/new_clim_FLOAT_V12C_2012_2025/bitsea_complement/CREATE_superfloat_SUBSET/SUPERFLOAT_2012_2024/
+mkdir -p $OUTDIR
 
 #  make a copy of the dataset es V9C_GB into my scratch for the date range datastart to dataend
-my_prex "python 0_copy_subset_superfloat.py -i $INDIR -o $OUTDIR -s $DATE_start -e $DATE_end"
+#my_prex "python 0_copy_subset_superfloat.py -i $INDIR -o $OUTDIR -s $DATE_start -e $DATE_end"
 
-exit 0
 
 # create float index
 cp 1_dump_index.py $OUTDIR
-#python ${OUTDIR}/1_dump_index.py -i $OUTDIR -o ${OUTDIR}/Float_Index.txt -t superfloat
+cd $OUTDIR
+my_prex "python 1_dump_index.py -i $OUTDIR -o $OUTDIR/Float_Index.txt -t superfloat"
 
+exit 0
 python 2_Table_of_avail_floats.py -i $INDIR -o $OUTDIR -s $DATE_start -e $DATE_end
 
 exit 0
