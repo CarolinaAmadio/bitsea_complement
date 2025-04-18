@@ -1,0 +1,10 @@
+# Python compiled files
+*.pyc
+__pycache__/
+
+# Specific folders to ignore
+CREATE_superfloat_SUBSET/SLURMS/
+CREATE_superfloat_SUBSET/SUPERFLOAT_2012_2024/
+
+# Specific file
+profile.inc
