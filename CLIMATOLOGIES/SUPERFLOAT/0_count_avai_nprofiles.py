@@ -2,7 +2,7 @@ import argparse
 
 def argument():
     parser = argparse.ArgumentParser(description = '''
-    Creates ave files for aveScan profiler in chain validation
+    counts the available BGC-Argo float profiles per basin and plots their monthly distribution.
     ''', formatter_class=argparse.RawTextHelpFormatter)
 
     parser.add_argument(   '--outdir','-o',
